@@ -7,51 +7,48 @@ public class FileDisplayer {
 	
 
         try {
-        	// Adapt this when you want to read and display a different file.
-            String fileName = "GraduateGrades.csv";
-            File file=new File(fileName);
+            String fileName = "GraduateGrades.csv"; // The name of the file you want to read
+            File file=new File(fileName); // Creating a File object so we can create code that reads the file
             
 			
-            // This code uses two Scanners, one which scans the file line per line
-            Scanner fileScanner1 = new Scanner(file);
-			Scanner fileScanner2 = new Scanner(file);
-			Scanner fileScanner3 = new Scanner(file);
+            Scanner columnScanner = new Scanner(file); // This scanner is made to count the number of columns in the csv file
+			Scanner rowScanner = new Scanner(file); // This scanner is made to count the number of columns in the csv file
+			Scanner elementScanner = new Scanner(file); // This canner is made to record the elements from the csv file into the 2d array
 
 
-			int lines = -1;
-			int linesDone2 = 0;
-			int columnNumber = 0;
-		
+			int rows = -1; // This is the variable that stores the number of rows in the data, note that it starts as -1 because it removes the line that states the column names
+			int columns = 0; // this is the variable that stores the number of columns in the data
+			int linesDone = 0; // This is the variable that keeps track of how many lines have been recorded into the array
 
-			while (fileScanner1.hasNextLine()) {
-            		String line = fileScanner1.nextLine();
-            		// and one that scans the line entry per entry using the commas as delimiters
-            		Scanner lineScanner = new Scanner(line);
-                	lineScanner.useDelimiter(",");
-				
-            		while (lineScanner.hasNext() && !lineScanner.hasNextInt()) {
-						lineScanner.next();
-						columnNumber++;
-            		}
-            		lineScanner.close();	
+            String line = columnScanner.nextLine(); // This is a variable that stores the current line which the column scanner is reading through
+            Scanner lineScanner = new Scanner(line); // This is a scanner that separates the different parts of the line into objects separated by commas
+            lineScanner.useDelimiter(","); // This is what separates based on commas
+
+			// The following is a while loop that counts the number of columns based on the number of objects (separated by commas) until it finds an integer
+            while (lineScanner.hasNext() && !lineScanner.hasNextInt()) { // This is a loop condition that makes sure that there is an object after the current one and that it is not an integer
+				lineScanner.next(); // This makes the scanner jump to the next object, so we're not stuck in the current object
+				columns++; // This adds one to the counter that keeps track of columns, since we have found an object that isnt an int
             }
+            lineScanner.close(); // I dont know exactly what this does but I see it all the time so I put it there to stay safe
+			columnScanner.close(); // Same here
 
-			fileScanner1.close();
-
-			while (fileScanner2.hasNextLine() && lines < 25) {
-				lines++;
+			// The following is a while loop that counts the number of rows based on just going line by line in the file and counting how many jumps are made
+			while (rowScanner.hasNextLine() && rows < 25) { // Note that it stops after 25, this is because we have thousands of rows and right now we're just writing and testing the code
+				rows++;
 			}
 
-			double[][] doublearray = new double[lines][columnNumber];
+			double[][] doublearray = new double[rows][columns]; // This is the 2D array that we create, it is an array of doubles because the code given to us mostly uses doubles
 
+
+			// After this is all code given to us on Canvas
             
-            while (fileScanner3.hasNextLine() && linesDone2 < 25) {
+            while (elementScanner.hasNextLine() && linesDone < 25) {
 
-            	String line = fileScanner3.nextLine();
+            	line = elementScanner.nextLine();
             	// and one that scans the line entry per entry using the commas as delimiters
-            	Scanner lineScanner = new Scanner(line);
+            	lineScanner = new Scanner(line);
                 lineScanner.useDelimiter(",");
-				linesDone2++;
+				linesDone++;
 				
             	while (lineScanner.hasNext()) {
             		// Separate commands can be used depending on the types of the entries
@@ -73,7 +70,7 @@ public class FileDisplayer {
             	System.out.println();
             }
             
-            fileScanner3.close();
+            elementScanner.close();
 
         } catch (Exception ex) {
             ex.printStackTrace();
