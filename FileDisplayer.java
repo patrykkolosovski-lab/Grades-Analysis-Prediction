@@ -13,57 +13,52 @@ public class FileDisplayer {
             
 			
             // This code uses two Scanners, one which scans the file line per line
-            Scanner fileScanner = new Scanner(file);
+            Scanner fileScanner1 = new Scanner(file);
+			Scanner fileScanner2 = new Scanner(file);
+			Scanner fileScanner3 = new Scanner(file);
 
-			int lines = 0;
-            int linesDone = 0;
+
+			int lines = -1;
 			int linesDone2 = 0;
 			int columnNumber = 0;
-			boolean shouldBreak = false;
+		
 
-			
-			while (fileScanner.nextLine() != null) {
-				lines++;
-			}
-
-			while (fileScanner.hasNextLine() && linesDone2 < 25) {
-				if (shouldBreak == false) {
-					
-            		String line = fileScanner.nextLine();
-            		linesDone2++;
+			while (fileScanner1.hasNextLine()) {
+            		String line = fileScanner1.nextLine();
             		// and one that scans the line entry per entry using the commas as delimiters
             		Scanner lineScanner = new Scanner(line);
                 	lineScanner.useDelimiter(",");
 				
-            		while (lineScanner.hasNext()) {
+            		while (lineScanner.hasNext() && !lineScanner.hasNextInt()) {
+						lineScanner.next();
 						columnNumber++;
-						if (lineScanner.hasNextInt() || lineScanner.hasNextBoolean()) {
-							shouldBreak = true;
-						}
             		}
-            
             		lineScanner.close();	
-				}
             }
+
+			fileScanner1.close();
+
+			while (fileScanner2.hasNextLine() && lines < 25) {
+				lines++;
+			}
 
 			double[][] doublearray = new double[lines][columnNumber];
 
             
-            while (fileScanner.hasNextLine() && linesDone < 25) {
+            while (fileScanner3.hasNextLine() && linesDone2 < 25) {
 
-            	String line = fileScanner.nextLine();
-            	linesDone++;
+            	String line = fileScanner3.nextLine();
             	// and one that scans the line entry per entry using the commas as delimiters
             	Scanner lineScanner = new Scanner(line);
                 lineScanner.useDelimiter(",");
+				linesDone2++;
 				
             	while (lineScanner.hasNext()) {
             		// Separate commands can be used depending on the types of the entries
             		// (i) and (s) are added to the printout to show how each entry is recognized
             		if (lineScanner.hasNextInt()) {
             			int i = lineScanner.nextInt();
-						double x = ((double)i);
-            			
+            			System.out.print("(i)" + i + " ");
             		} else if (lineScanner.hasNextDouble()) {
             			double d = lineScanner.nextDouble();
             			System.out.print("(d)" + d + " ");
@@ -78,7 +73,7 @@ public class FileDisplayer {
             	System.out.println();
             }
             
-            fileScanner.close();
+            fileScanner3.close();
 
         } catch (Exception ex) {
             ex.printStackTrace();
