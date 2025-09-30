@@ -71,7 +71,7 @@ public class FileDisplayer {
 			// [studentID][courseID]
 			// For example [0][0] is the studentID 0 and the course 0, so it returns the number 8 which is the grade for "Cryogenic Physics" for the studentID 0
 			System.out.println(GraduateGradesArray[0][0]);
-			// Another example is [3][9] which would be 8 which is the grade for "Pulsar Spectroscopy" for studentID 0
+			// Another example is [3][9] which would be 8 which is the grade for "Pulsar Spectroscopy" for studentID 3
 			System.out.println(GraduateGradesArray[3][9]);
 			// In the CSV there are no grades for "Signals" so all of them are automatically assigned a 0
 			// Remember that "Signals" is course number 36 in the array because arrays count from 0
