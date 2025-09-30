@@ -11,7 +11,7 @@ public class FileDisplayer {
             File file=new File(fileName); // Creating a File object so we can create code that reads the file
             
 			
-            Scanner columnScanner = new Scanner(file); // This scanner is made to count the number of columns in the csv file
+        	Scanner columnScanner = new Scanner(file); // This scanner is made to count the number of columns in the csv file
 			Scanner rowScanner = new Scanner(file); // This scanner is made to count the number of columns in the csv file
 			Scanner elementScanner = new Scanner(file); // This canner is made to record the elements from the csv file into the 2d array
 
@@ -33,44 +33,55 @@ public class FileDisplayer {
 			columnScanner.close(); // Same here
 
 			// The following is a while loop that counts the number of rows based on just going line by line in the file and counting how many jumps are made
-			while (rowScanner.hasNextLine() && rows < 25) { // Note that it stops after 25, this is because we have thousands of rows and right now we're just writing and testing the code
+			while (rowScanner.hasNextLine() && rows < 50) { // Note that it stops after 50, this is because we have thousands of rows and right now we're just writing and testing the code
 				rows++;
 			}
 
-			double[][] doublearray = new double[rows][columns]; // This is the 2D array that we create, it is an array of doubles because the code given to us mostly uses doubles
-
-
-			// After this is all code given to us on Canvas
+			double[][] GraduateGradesArray = new double[rows][columns]; // This is the 2D array that we create, it is an array of doubles because the code given to us mostly uses doubles
             
-            while (elementScanner.hasNextLine() && linesDone < 25) {
-
+			// The following while loop fills the array with the grades for each course for each student
+			elementScanner.nextLine();
+            while (elementScanner.hasNextLine() && linesDone < 50) {
             	line = elementScanner.nextLine();
-            	// and one that scans the line entry per entry using the commas as delimiters
             	lineScanner = new Scanner(line);
                 lineScanner.useDelimiter(",");
-				linesDone++;
-				
+				int j = 0;
             	while (lineScanner.hasNext()) {
-            		// Separate commands can be used depending on the types of the entries
-            		// (i) and (s) are added to the printout to show how each entry is recognized
-            		if (lineScanner.hasNextInt()) {
-            			int i = lineScanner.nextInt();
-            			System.out.print("(i)" + i + " ");
-            		} else if (lineScanner.hasNextDouble()) {
-            			double d = lineScanner.nextDouble();
-            			System.out.print("(d)" + d + " ");
+					if (lineScanner.hasNextInt()) {
+						lineScanner.next();
+					} else if (lineScanner.hasNextDouble()) {
+						GraduateGradesArray[linesDone][j] = lineScanner.nextDouble();
+						j++;
             		} else {
-            			String s = lineScanner.next();
-            			System.out.print("(s)" + s + " ");
-
+            			lineScanner.next();
             		}
             	}
-            
+				linesDone++;
             	lineScanner.close();
-            	System.out.println();
             }
-            
             elementScanner.close();
+
+			// All the code above this comment is made to prepare and fill the 2d array, from this point on you can use the 2d array for your tasks
+			// Below are instructions for using the 2d array
+			// The 2d array is exactly like a table, where you get the information for a specific element in the array by putting the numbers for rows and columns like so
+			// [rows][columns]
+			// In our data, the rows are the student IDs while the columns are the different course grades
+			// The student ID can be used directly but the courseID is not referred to by name but by position
+			// The 0th course is "Cryogenic Physics", the 1st course is "Evolutionary Dynamics", the 2nd course is "Dark Energy", and so on
+			// [studentID][courseID]
+			// For example [0][0] is the studentID 0 and the course 0, so it returns the number 8 which is the grade for "Cryogenic Physics" for the studentID 0
+			System.out.println(GraduateGradesArray[0][0]);
+			// Another example is [3][9] which would be 8 which is the grade for "Pulsar Spectroscopy" for studentID 0
+			System.out.println(GraduateGradesArray[3][9]);
+			// In the CSV there are no grades for "Signals" so all of them are automatically assigned a 0
+			// Remember that "Signals" is course number 36 in the array because arrays count from 0
+			System.out.println(GraduateGradesArray[0][36]);
+			// Write your code in between this comment and the next
+
+
+
+
+			// The next comment, ignore the catch stuff below
 
         } catch (Exception ex) {
             ex.printStackTrace();
