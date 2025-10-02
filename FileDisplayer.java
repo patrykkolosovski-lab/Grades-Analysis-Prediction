@@ -78,7 +78,13 @@ public class FileDisplayer {
 			// you can get the name of the course with the CourseNamesArray by inputting that CourseID into the array
 			// Write your main method code in between this comment and the next
 
+			System.out.println();
+			System.out.println();
 
+
+			// for (int i = 0; i < Findlowest(GraduateGradesArray).length; i++) {
+			// 	System.out.println(Findlowest(GraduateGradesArray)[i]);
+			// }
 
 
 
@@ -90,6 +96,76 @@ public class FileDisplayer {
     }
 
 
+	public static double[] AverageGrades(double[][] GGA) {
+		double[] AverageGrades = new double[GGA[0].length];
+		for (int i = 0; i < GGA[0].length; i++) {
+			double average = 0;
+			for (int j = 0; j < GGA.length; j++) {
+				average = average + GGA[j][i];
+			}
+			average = average/GGA.length;
+			AverageGrades[i] = average;
+		}
+		// for (int i = 0; i < AverageGrades.length; i++) {
+		//	System.out.println(i + " " + AverageGrades[i]);
+		// }
+		return AverageGrades;
+	}
+
+	public static int[] Findhighest(double[][] GGA) {
+		double[] AverageGrades = AverageGrades(GGA);
+		double x = 0;
+		int z = 1;
+		int y[] = new int[z];
+		int w = 0;
+		for(int i = 0; i < AverageGrades.length;i++){
+			if(AverageGrades[i]>x){
+				x=AverageGrades[i];
+				y[0] = i;
+				w = i;
+			}
+		}
+		for(int i = 0; i < AverageGrades.length;i++){
+			if(AverageGrades[i] == x && w != i){
+				z++;
+				int[] k = new int[z];
+				for (int j = 0; j < y.length; j++) {
+					k[j] = y[j];
+				}
+				y = k;
+
+				y[y.length-1] = i;
+			}
+		}
+		return y;
+	}
+
+	public static int[] Findlowest(double[][] GGA) {
+		double[] AverageGrades = AverageGrades(GGA);
+		double x = 1000;
+		int z = 1;
+		int y[] = new int[z];
+		int w = 0;
+		for(int i = 0; i < AverageGrades.length;i++){
+			if(AverageGrades[i]<x){
+				x=AverageGrades[i];
+				y[0] = i;
+				w = i;
+			}
+		}
+		for(int i = 0; i < AverageGrades.length;i++){
+			if(AverageGrades[i] == x && w != i){
+				z++;
+				int[] k = new int[z];
+				for (int j = 0; j < y.length; j++) {
+					k[j] = y[j];
+				}
+				y = k;
+
+				y[y.length-1] = i;
+			}
+		}
+		return y;
+	}
 	// Your new method should start here
-	
 }
