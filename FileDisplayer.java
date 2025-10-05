@@ -81,12 +81,21 @@ public class FileDisplayer {
 			System.out.println();
 			System.out.println();
 
-
+			// This commented code is to test out the code for finding the hardest and easiest courses
 			// for (int i = 0; i < Findlowest(GraduateGradesArray).length; i++) {
 			// 	System.out.println(Findlowest(GraduateGradesArray)[i]);
 			// }
 
 
+
+			for (int i = 0; i < max(GraduateGradesArray).length; i++) {
+				System.out.println(max(GraduateGradesArray)[i]);
+			}
+			
+			
+
+
+			
 
 			// The next comment, ignore the catch stuff below
 
@@ -167,5 +176,76 @@ public class FileDisplayer {
 		}
 		return y;
 	}
+
+
+	//Checking for the minimum grade for every course that each studentId has:
+public static double[] min(double[][] GGA) {
+        double[] MinimumGrades = new double[GGA[0].length];
+        for (int i = 0; i < GGA[0].length; i++) {
+            double min = 10000;
+            for (int j = 0; j < GGA[0].length; j++) {
+                if(GGA[j][i]<min){
+                    min=GGA[j][i];
+                }
+            }
+
+            MinimumGrades[i] = min;
+        }
+
+        return MinimumGrades;
+    }
+//Checking for the minimum grade for every course that each studentId has:
+public static double[] max(double[][] GGA) {
+        double[] MaximumGrades = new double[GGA[0].length];
+        for (int i = 0; i < GGA[0].length; i++) {
+            double max = 0;
+            for (int j = 0; j < GGA[0].length; j++) {
+                if(GGA[j][i]>max){
+                    max=GGA[j][i];
+                }
+            }
+
+            MaximumGrades[i] = max;
+        }
+
+        return MaximumGrades;
+    }
+
+	public static double[] variance(double[][] GGA, double[] AverageGrades) {
+        double[] variancearray = new double[GGA[0].length];
+        for (int i = 0; i < AverageGrades.length; i++) {
+            double variance = 0;
+            for (int j = 0; j < AverageGrades.length; j++) {
+                variance = variance + Math.pow(AverageGrades[i] - GGA[j][i], 2);
+            }
+            variance = variance/GGA.length;
+            variancearray [i] = variance;
+        }
+        return variancearray;
+	}
+
+//Calculating the range by MAX-MIN
+public static double[] range(double[] MaximumGrades,double[] MinimumGrades){
+    int LENGTH= MaximumGrades.length;
+    double range[];
+    range=new double[LENGTH];
+
+    for(int i=0; i<LENGTH ;i++){
+        range[i]=MaximumGrades[i]-MinimumGrades[i];
+    }
+    return range;
+}
+
+//Calculating the amplitude by (MAX-MIN)/2
+public static double[] amplitude(double[] MaximumGrades,double[] MinimumGrades){
+    int LENGTH= MaximumGrades.length;
+    double amp[];
+    amp=new double[LENGTH];
+
+    for(int i=0; i<LENGTH ;i++){
+        amp[i]=(MaximumGrades[i]-MinimumGrades[i])/2;
+    }
+    return amp;
+}
 	// Your new method should start here
 }
