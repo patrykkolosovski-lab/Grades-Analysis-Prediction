@@ -1,4 +1,6 @@
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class FileDisplayer {
@@ -92,6 +94,22 @@ public class FileDisplayer {
 				System.out.println(max(GraduateGradesArray)[i]);
 			}
 			
+
+			System.out.println("main method started\n");
+
+        // example data
+        // double[][] GGA = {
+        //     {9.0, 7.5, 8.5},
+        //     {6.2, 6.8, 7.0},
+        //     {8.6, 9.1, 8.9},
+        //     {5.9, 6.1, 6.3}
+        // };
+        // String[] CourseNamesArray = {"Intro DSAI", "Discrete Math", "Programming"};
+        // double[] avg = AverageStudentGrade(GGA);
+        // cumLaude(avg);
+        // gradeDistributionBySubject(GGA, CourseNamesArray);
+        // coursesThatSeparateTop(GGA, CourseNamesArray);
+
 			
 
 
@@ -247,5 +265,124 @@ public static double[] amplitude(double[] MaximumGrades,double[] MinimumGrades){
     }
     return amp;
 }
+
+// calculate avg grade per student
+    public static double[] AverageStudentGrade(double[][] GGA) {
+        double[] AverageStudentGrades = new double[GGA.length];
+        for (int i = 0; i < GGA.length; i++) {
+            double average = 0;
+            for (int j = 0; j < GGA[0].length; j++) {
+                average = average + GGA[i][j];
+            }
+            average = average / GGA[0].length;
+            AverageStudentGrades[i] = average;
+        }
+        return AverageStudentGrades;
+    }
+
+    // find who graduated cum laude (8.5 or higher)
+    public static void cumLaude(double[] AverageStudentGrades) {
+        List<Integer> CumLaudeID = new ArrayList<>();
+        for (int i = 0; i < AverageStudentGrades.length; i++) {
+            if (AverageStudentGrades[i] >= 8.5) {
+                CumLaudeID.add(i);
+            }
+        }
+        System.out.println("the amount of students who graduated cum laude: " + CumLaudeID.size());
+        System.out.println("students who graduated cum laude: " + CumLaudeID);
+    }
+
+    // show how many students fall in each grade range per subject
+    public static void gradeDistributionBySubject(double[][] GGA, String[] CourseNamesArray) {
+        int brackets = 5;
+        int subjects = GGA[0].length;
+        String[] ranges = {
+                "5.0 – 5.9",
+                "6.0 – 6.9",
+                "7.0 – 7.9",
+                "8.0 – 8.9",
+                "9.0 – 10.0"
+        };
+        int[][] gradeDistribution = new int[brackets][subjects];
+
+        // count how many grades fall into each range
+        for (int i = 0; i < GGA[0].length; i++) {
+            for (int j = 0; j < GGA.length; j++) {
+                if (GGA[j][i] >= 5.0 && GGA[j][i] < 6.0) {
+                    gradeDistribution[0][i]++;
+                } else if (GGA[j][i] >= 6.0 && GGA[j][i] < 7.0) {
+                    gradeDistribution[1][i]++;
+                } else if (GGA[j][i] >= 7.0 && GGA[j][i] < 8.0) {
+                    gradeDistribution[2][i]++;
+                } else if (GGA[j][i] >= 8.0 && GGA[j][i] < 9.0) {
+                    gradeDistribution[3][i]++;
+                } else if (GGA[j][i] >= 9.0 && GGA[j][i] <= 10.0) {
+                    gradeDistribution[4][i]++;
+                }
+            }
+        }
+
+        // print results for each subject
+        for (int subject = 0; subject < gradeDistribution[0].length; subject++) {
+            System.out.println("subject: " + CourseNamesArray[subject]);
+            for (int k = 0; k < gradeDistribution.length; k++) {
+                System.out.println("  " + ranges[k] + " : " + gradeDistribution[k][subject]);
+            }
+            System.out.println();
+        }
+    }
+
+    // check which course separates top performers from the rest
+    public static void coursesThatSeparateTop(double[][] GGA, String[] CourseNamesArray) {
+        double[] averages = AverageStudentGrade(GGA);
+
+        List<Integer> TopIDs = new ArrayList<>();
+        List<Integer> RestIDs = new ArrayList<>();
+        for (int i = 0; i < averages.length; i++) {
+            if (averages[i] >= 8.5) {
+                TopIDs.add(i);
+            } else {
+                RestIDs.add(i);
+            }
+        }
+
+        System.out.println("top students (>= 8.5 avg): " + TopIDs);
+        System.out.println("rest of students: " + RestIDs);
+
+        String bestCourse = "";
+        double bestDiff = -1e9;
+
+        // compare averages for each subject between top and rest
+        for (int s = 0; s < GGA[0].length; s++) {
+            double topSum = 0.0;
+            for (int t = 0; t < TopIDs.size(); t++) {
+                int id = TopIDs.get(t);
+                topSum = topSum + GGA[id][s];
+            }
+            double topMean = TopIDs.size() == 0 ? Double.NaN : topSum / TopIDs.size();
+
+            double restSum = 0.0;
+            for (int r = 0; r < RestIDs.size(); r++) {
+                int id2 = RestIDs.get(r);
+                restSum = restSum + GGA[id2][s];
+            }
+            double restMean = RestIDs.size() == 0 ? Double.NaN : restSum / RestIDs.size();
+
+            double diff = topMean - restMean;
+
+            System.out.println("  " + CourseNamesArray[s] + " -> diff (top - rest): " +
+                               (Double.isNaN(diff) ? "NaN" : String.format("%.3f", diff)) +
+                               " (top: " + (Double.isNaN(topMean) ? "NaN" : String.format("%.2f", topMean)) +
+                               ", rest: " + (Double.isNaN(restMean) ? "NaN" : String.format("%.2f", restMean)) + ")");
+
+            if (!Double.isNaN(diff) && diff > bestDiff) {
+                bestDiff = diff;
+                bestCourse = CourseNamesArray[s];
+            }
+        }
+
+        System.out.println("course that separates top from rest the most: " +
+                           bestCourse + " (diff = " + String.format("%.3f", bestDiff) + ")");
+    }
 	// Your new method should start here
 }
