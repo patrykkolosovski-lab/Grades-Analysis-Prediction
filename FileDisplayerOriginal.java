@@ -3,12 +3,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class FileDisplayer {
+public class FileDisplayerOriginal {
 
     public static void main(String[] args) {
 
         try {
-            String fileName = "CurrentGrades.csv"; // The name of the file you want to read
+            String fileName = "GraduateGrades.csv"; // The name of the file you want to read
             File file=new File(fileName); // Creating a File object so we can create code that reads the file
 			
         	Scanner columnScanner = new Scanner(file); // This scanner is made to count the number of columns in the csv file
@@ -36,7 +36,7 @@ public class FileDisplayer {
 				rows++;
 			}
 
-			String[][] GraduateGradesArray = new String[rows][columns]; // This is the 2D array that we create, it is an array of doubles because the code given to us mostly uses doubles
+			double[][] GraduateGradesArray = new double[rows][columns]; // This is the 2D array that we create, it is an array of doubles because the code given to us mostly uses doubles
 			String[] CourseNamesArray = new String[columns]; // This is the array that stores the course names according to their courseID
             
 			// The following while loop fills the array with the grades for each course for each student
@@ -48,12 +48,8 @@ public class FileDisplayer {
 				int z = 0;
 				lineScanner.next();
             	while (lineScanner.hasNext()) {
-                    if (lineScanner.hasNext("NG")) {
-                        GraduateGradesArray[linesDone-1][j] = "NG";
-                        lineScanner.next();
-                        j++;
-                    } else if (lineScanner.hasNextDouble()) {
-						GraduateGradesArray[linesDone-1][j] = lineScanner.next();
+					if (lineScanner.hasNextDouble()) {
+						GraduateGradesArray[linesDone-1][j] = lineScanner.nextDouble();
 						j++;
             		} else {
             			CourseNamesArray[z] = lineScanner.next();
@@ -127,20 +123,14 @@ public class FileDisplayer {
     }
 
 
-	public static double[] AverageGrades(String[][] GGA) {
+	public static double[] AverageGrades(double[][] GGA) {
 		double[] AverageGrades = new double[GGA[0].length];
 		for (int i = 0; i < GGA[0].length; i++) {
-            int counter = 0;
 			double average = 0;
 			for (int j = 0; j < GGA.length; j++) {
-                if (GGA[j][i] != null) {
-                    if (!GGA[j][i].equals("NG")) {
-                        average = average + Double.parseDouble(GGA[j][i]);
-                        counter++;
-                    }
-                }
+				average = average + GGA[j][i];
 			}
-			average = average/counter;
+			average = average/GGA.length;
 			AverageGrades[i] = average;
 		}
 		// for (int i = 0; i < AverageGrades.length; i++) {
@@ -149,7 +139,7 @@ public class FileDisplayer {
 		return AverageGrades;
 	}
 
-	public static int[] Findhighest(String[][] GGA) {
+	public static int[] Findhighest(double[][] GGA) {
 		double[] AverageGrades = AverageGrades(GGA);
 		double x = 0;
 		int z = 1;
@@ -177,7 +167,7 @@ public class FileDisplayer {
 		return y;
 	}
 
-	public static int[] Findlowest(String[][] GGA) {
+	public static int[] Findlowest(double[][] GGA) {
 		double[] AverageGrades = AverageGrades(GGA);
 		double x = 1000;
 		int z = 1;
@@ -207,35 +197,29 @@ public class FileDisplayer {
 
 
 	//Checking for the minimum grade for every course that each studentId has:
-public static double[] min(String[][] GGA) {
+public static double[] min(double[][] GGA) {
         double[] MinimumGrades = new double[GGA[0].length];
         for (int i = 0; i < GGA[0].length; i++) {
             double min = 10000;
             for (int j = 0; j < GGA[0].length; j++) {
-                if (!GGA[j][i].equals("NG")) {
-                    if(Double.parseDouble(GGA[j][i])<min){
-                        min=Double.parseDouble(GGA[j][i]);
-                    }
+                if(GGA[j][i]<min){
+                    min=GGA[j][i];
                 }
             }
-            if (min == 10000) {
-                min = 0;
-            }
+
             MinimumGrades[i] = min;
         }
 
         return MinimumGrades;
     }
 //Checking for the minimum grade for every course that each studentId has:
-public static double[] max(String[][] GGA) {
+public static double[] max(double[][] GGA) {
         double[] MaximumGrades = new double[GGA[0].length];
         for (int i = 0; i < GGA[0].length; i++) {
             double max = 0;
             for (int j = 0; j < GGA[0].length; j++) {
-                if (!GGA[j][i].equals("NG")) {
-                    if(Double.parseDouble(GGA[j][i])>max){
-                        max=Double.parseDouble(GGA[j][i]);
-                    }
+                if(GGA[j][i]>max){
+                    max=GGA[j][i];
                 }
             }
 
@@ -245,18 +229,14 @@ public static double[] max(String[][] GGA) {
         return MaximumGrades;
     }
 
-	public static double[] variance(String[][] GGA, double[] AverageGrades) {
+	public static double[] variance(double[][] GGA, double[] AverageGrades) {
         double[] variancearray = new double[GGA[0].length];
         for (int i = 0; i < AverageGrades.length; i++) {
-            int counter = 0;
             double variance = 0;
             for (int j = 0; j < AverageGrades.length; j++) {
-                if (!GGA[j][i].equals("NG")) {
-                    variance = variance + Math.pow(AverageGrades[i] - Double.parseDouble(GGA[j][i]), 2);
-                    counter++;
-                }
+                variance = variance + Math.pow(AverageGrades[i] - GGA[j][i], 2);
             }
-            variance = variance/counter;
+            variance = variance/GGA.length;
             variancearray [i] = variance;
         }
         return variancearray;
@@ -287,21 +267,14 @@ public static double[] amplitude(double[] MaximumGrades,double[] MinimumGrades){
 }
 
 // calculate avg grade per student
-    public static double[] AverageStudentGrade(String[][] GGA) {
+    public static double[] AverageStudentGrade(double[][] GGA) {
         double[] AverageStudentGrades = new double[GGA.length];
         for (int i = 0; i < GGA.length; i++) {
-            int counter = 0;
             double average = 0;
             for (int j = 0; j < GGA[0].length; j++) {
-                if (GGA[i][j] != null) {
-                    if (!GGA[i][j].equals("NG")) {
-                        average = average + Double.parseDouble(GGA[i][j]);
-                        counter++;
-                    }
-                }
-                
+                average = average + GGA[i][j];
             }
-            average = average / counter;
+            average = average / GGA[0].length;
             AverageStudentGrades[i] = average;
         }
         return AverageStudentGrades;
@@ -320,7 +293,7 @@ public static double[] amplitude(double[] MaximumGrades,double[] MinimumGrades){
     }
 
     // show how many students fall in each grade range per subject
-    public static void gradeDistributionBySubject(String[][] GGA, String[] CourseNamesArray) {
+    public static void gradeDistributionBySubject(double[][] GGA, String[] CourseNamesArray) {
         int brackets = 5;
         int subjects = GGA[0].length;
         String[] ranges = {
@@ -335,21 +308,16 @@ public static double[] amplitude(double[] MaximumGrades,double[] MinimumGrades){
         // count how many grades fall into each range
         for (int i = 0; i < GGA[0].length; i++) {
             for (int j = 0; j < GGA.length; j++) {
-                if (GGA[j][i] != null) {
-                    if (!GGA[j][i].equals("NG")) {
-                        double value = Double.parseDouble(GGA[j][i]);
-                        if (value >= 5.0 && value < 6.0) {
-                            gradeDistribution[0][i]++;
-                        } else if (value >= 6.0 && value < 7.0) {
-                            gradeDistribution[1][i]++;
-                        } else if (value >= 7.0 && value < 8.0) {
-                            gradeDistribution[2][i]++;
-                        } else if (value >= 8.0 && value < 9.0) {
-                            gradeDistribution[3][i]++;
-                        } else if (value >= 9.0 && value <= 10.0) {
-                            gradeDistribution[4][i]++;
-                        }
-                    }
+                if (GGA[j][i] >= 5.0 && GGA[j][i] < 6.0) {
+                    gradeDistribution[0][i]++;
+                } else if (GGA[j][i] >= 6.0 && GGA[j][i] < 7.0) {
+                    gradeDistribution[1][i]++;
+                } else if (GGA[j][i] >= 7.0 && GGA[j][i] < 8.0) {
+                    gradeDistribution[2][i]++;
+                } else if (GGA[j][i] >= 8.0 && GGA[j][i] < 9.0) {
+                    gradeDistribution[3][i]++;
+                } else if (GGA[j][i] >= 9.0 && GGA[j][i] <= 10.0) {
+                    gradeDistribution[4][i]++;
                 }
             }
         }
@@ -365,7 +333,7 @@ public static double[] amplitude(double[] MaximumGrades,double[] MinimumGrades){
     }
 
     // check which course separates top performers from the rest
-    public static void coursesThatSeparateTop(String[][] GGA, String[] CourseNamesArray) {
+    public static void coursesThatSeparateTop(double[][] GGA, String[] CourseNamesArray) {
         double[] averages = AverageStudentGrade(GGA);
 
         List<Integer> TopIDs = new ArrayList<>();
