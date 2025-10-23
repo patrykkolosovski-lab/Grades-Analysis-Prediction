@@ -94,9 +94,7 @@ public class FileDisplayer {
 
 
 
-			for (int i = 0; i < AverageStudentGrade(GraduateGradesArray).length; i++) {
-				System.out.println(AverageStudentGrade(GraduateGradesArray)[i]);
-			}
+			
 			
 
 			System.out.println("main method started\n");
@@ -121,6 +119,10 @@ public class FileDisplayer {
 
 			// The next comment, ignore the catch stuff below
 
+
+
+
+            si(GraduateGradesArray);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -365,57 +367,169 @@ public static double[] amplitude(double[] MaximumGrades,double[] MinimumGrades){
     }
 
     // check which course separates top performers from the rest
-    public static void coursesThatSeparateTop(String[][] GGA, String[] CourseNamesArray) {
-        double[] averages = AverageStudentGrade(GGA);
+    // public static void coursesThatSeparateTop(String[][] GGA, String[] CourseNamesArray) {
+    //     double[] averages = AverageStudentGrade(GGA);
 
-        List<Integer> TopIDs = new ArrayList<>();
-        List<Integer> RestIDs = new ArrayList<>();
-        for (int i = 0; i < averages.length; i++) {
-            if (averages[i] >= 8.5) {
-                TopIDs.add(i);
-            } else {
-                RestIDs.add(i);
+    //     List<Integer> TopIDs = new ArrayList<>();
+    //     List<Integer> RestIDs = new ArrayList<>();
+    //     for (int i = 0; i < averages.length; i++) {
+    //         if (averages[i] >= 8.5) {
+    //             TopIDs.add(i);
+    //         } else {
+    //             RestIDs.add(i);
+    //         }
+    //     }
+
+    //     System.out.println("top students (>= 8.5 avg): " + TopIDs);
+    //     System.out.println("rest of students: " + RestIDs);
+
+    //     String bestCourse = "";
+    //     double bestDiff = -1e9;
+
+    //     // compare averages for each subject between top and rest
+    //     for (int s = 0; s < GGA[0].length; s++) {
+    //         double topSum = 0.0;
+    //         for (int t = 0; t < TopIDs.size(); t++) {
+    //             int id = TopIDs.get(t);
+    //             topSum = topSum + GGA[id][s];
+    //         }
+    //         double topMean = TopIDs.size() == 0 ? Double.NaN : topSum / TopIDs.size();
+
+    //         double restSum = 0.0;
+    //         for (int r = 0; r < RestIDs.size(); r++) {
+    //             int id2 = RestIDs.get(r);
+    //             restSum = restSum + GGA[id2][s];
+    //         }
+    //         double restMean = RestIDs.size() == 0 ? Double.NaN : restSum / RestIDs.size();
+
+    //         double diff = topMean - restMean;
+
+    //         System.out.println("  " + CourseNamesArray[s] + " -> diff (top - rest): " +
+    //                            (Double.isNaN(diff) ? "NaN" : String.format("%.3f", diff)) +
+    //                            " (top: " + (Double.isNaN(topMean) ? "NaN" : String.format("%.2f", topMean)) +
+    //                            ", rest: " + (Double.isNaN(restMean) ? "NaN" : String.format("%.2f", restMean)) + ")");
+
+    //         if (!Double.isNaN(diff) && diff > bestDiff) {
+    //             bestDiff = diff;
+    //             bestCourse = CourseNamesArray[s];
+    //         }
+    //     }
+
+    //     System.out.println("course that separates top from rest the most: " +
+    //                        bestCourse + " (diff = " + String.format("%.3f", bestDiff) + ")");
+    // }
+
+    public static void si(String[][] CG){
+    try {
+            String[][] CurrentGrades=CG;
+
+            
+        
+
+            String fileName = "StudentInfo.csv"; // The name of the file you want to read
+            
+            File file=new File(fileName); 
+			
+
+        	Scanner columnScanner = new Scanner(file); 
+			Scanner rowScanner = new Scanner(file); 
+			Scanner elementScanner = new Scanner(file); 
+
+			int rows = -1; 
+			int columns = -1; 
+			int linesDone = 0; 
+
+            String line = columnScanner.nextLine(); 
+            Scanner lineScanner = new Scanner(line); 
+            lineScanner.useDelimiter(","); 
+
+			if (elementScanner.hasNextLine()) {//skipping the header
+            elementScanner.nextLine();
+}
+            while (lineScanner.hasNext() && !lineScanner.hasNextInt()) { 
+				lineScanner.next(); 
+				columns++; 
             }
+            lineScanner.close(); 
+			columnScanner.close();
+
+			
+			while (rowScanner.hasNextLine() && rows < 50) { 
+				rows++;
+			}
+
+			String[][] StudentInfoArray = new String[rows][columns]; 
+			
+            
+			// The following while loop fills the array with the grades for each course for each student
+            while (elementScanner.hasNextLine() && linesDone < 50) {
+            	line = elementScanner.nextLine();
+            	lineScanner = new Scanner(line);
+                lineScanner.useDelimiter(",");
+				int j = 0;
+				int z = 0;
+				lineScanner.next(); //skip first column ID if needed
+            	
+                while (lineScanner.hasNext()) {
+					StudentInfoArray[linesDone][j] = lineScanner.next();
+                    j++;
+            	}
+				linesDone++;
+            	lineScanner.close();
+            }
+            elementScanner.close();
+
+ 
+STEP3(CurrentGrades,StudentInfoArray);
+        
+} catch (Exception e){
+    e.printStackTrace();}
+
+}
+
+public static void STEP3(String[][] CG,String[][] SI){
+    int FeatureColumn=0;
+    String ActualFeature="Stable";
+
+    
+    //Step 1:finding out the length of the array
+    int count=0;
+    for(int i=0;i<SI.length;i++){
+        if(SI[i][FeatureColumn].equalsIgnoreCase(ActualFeature)){
+            count++;
         }
-
-        System.out.println("top students (>= 8.5 avg): " + TopIDs);
-        System.out.println("rest of students: " + RestIDs);
-
-        String bestCourse = "";
-        double bestDiff = -1e9;
-
-        // compare averages for each subject between top and rest
-        for (int s = 0; s < GGA[0].length; s++) {
-            double topSum = 0.0;
-            for (int t = 0; t < TopIDs.size(); t++) {
-                int id = TopIDs.get(t);
-                topSum = topSum + GGA[id][s];
-            }
-            double topMean = TopIDs.size() == 0 ? Double.NaN : topSum / TopIDs.size();
-
-            double restSum = 0.0;
-            for (int r = 0; r < RestIDs.size(); r++) {
-                int id2 = RestIDs.get(r);
-                restSum = restSum + GGA[id2][s];
-            }
-            double restMean = RestIDs.size() == 0 ? Double.NaN : restSum / RestIDs.size();
-
-            double diff = topMean - restMean;
-
-            System.out.println("  " + CourseNamesArray[s] + " -> diff (top - rest): " +
-                               (Double.isNaN(diff) ? "NaN" : String.format("%.3f", diff)) +
-                               " (top: " + (Double.isNaN(topMean) ? "NaN" : String.format("%.2f", topMean)) +
-                               ", rest: " + (Double.isNaN(restMean) ? "NaN" : String.format("%.2f", restMean)) + ")");
-
-            if (!Double.isNaN(diff) && diff > bestDiff) {
-                bestDiff = diff;
-                bestCourse = CourseNamesArray[s];
-            }
-        }
-
-        System.out.println("course that separates top from rest the most: " +
-                           bestCourse + " (diff = " + String.format("%.3f", bestDiff) + ")");
     }
+
+
+    //Step 2:filling the array with the indexes of the students that share the same properties
+    int index=0;
+    int SItemp[]=new int[count];
+    for(int i=0;i<SI.length;i++){
+        if(SI[i][FeatureColumn].equalsIgnoreCase(ActualFeature)){
+            SItemp[index]=i;
+            index++;
+        }
+    }
+
+    //Step 3:calculating the average of those that have the feature
+    double totalsum=0;
+    int totalgrades=0;
+    for(int m=0;m<SItemp.length;m++){
+        int studentindex=SItemp[m];
+        System.out.println(studentindex);
+        for(int j=0;j<CG[0].length;j++){
+            if(!CG[studentindex][j].equals("NG")){
+                totalsum+=Double.parseDouble(CG[studentindex][j]);
+                totalgrades++;
+            }
+        }
+    }
+
+
+    double avg=(totalgrades>0)? (totalsum/totalgrades):0; //calculating the AVG per student with the specific feature(if-then)
+    System.out.println(avg);
+
+}
 	// Your new method should start here
 }
 
