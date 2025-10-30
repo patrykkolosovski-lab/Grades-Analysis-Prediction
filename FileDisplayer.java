@@ -1,3 +1,4 @@
+import java.util.Arrays;
 
 public class FileDisplayer {
 
@@ -18,7 +19,7 @@ public class FileDisplayer {
 
         // Testing phase1step 1 + 2 methods
         double[] averagegrades = dataprocessor.AverageGrades(datacollector.GraduateGradesArray);
-        System.out.println(averagegrades[1]);
+        System.out.println(averagegrades[1] + "\n");
 
         // Preparing objects for phase1step3
         StudentInformationReader studentinformationreader = new StudentInformationReader();
@@ -26,18 +27,26 @@ public class FileDisplayer {
 
         // Testing phase1step 3 methods
         step3Object.STEP3(datacollector.GraduateGradesArray, studentinformationreader.StudentInfoArray);
+        System.out.println();
 
+        // Phase 2 Test
+        Phase2(datacollector.GraduateGradesArray, studentinformationreader.StudentInfoArray);
     }
 
-    public void Phase2Test(String[][] CurrentGrades,String[][] StudentInfoArray){
+    //Phase 2
+    public static void Phase2(String[][] CurrentGrades,String[][] StudentInfoArray){
 
-        String Feature="Stable";
+        //Course+feature from StudentInfo(if necessary)
+        String Feature="Silver"; //set value to null to not check StudentInfo for a feature
         int Course=0;
-        Chooser test1=new Chooser(CurrentGrades,StudentInfoArray,Course);
-        Chooser test2=new Chooser(CurrentGrades,StudentInfoArray,Course,Feature);
 
-        System.out.println(test1.course);
-        System.out.println(test2.course);
+        dataChooser test1=new dataChooser(CurrentGrades,StudentInfoArray,Course,Feature);
+        dataChooser test2=new dataChooser(CurrentGrades,StudentInfoArray,Course);
+
+        String[] PRINTTEST1=test1.getStudentGrades();
+        String[] PRINTTEST2=test2.getStudentGrades();
+        System.out.println(Arrays.toString(PRINTTEST1));
+        System.out.println(Arrays.toString(PRINTTEST2));
 
     }
 
