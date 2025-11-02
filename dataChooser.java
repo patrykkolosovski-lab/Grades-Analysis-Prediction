@@ -23,7 +23,11 @@ class dataChooser{
         this.feature = feature;
     }
 
-    private int getFeatureColumn(){
+    public dataChooser(String feature) {
+        this.feature = feature;
+    }
+
+    public int getFeatureColumn(){
         checkPIT();
         if(PITChecker!=0) {
             return 3;

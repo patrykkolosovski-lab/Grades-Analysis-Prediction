@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class dataCollector {
     private String filename;
-    public String[][] GraduateGradesArray;
+    public double[][] GraduateGradesArray;
     public String[] CourseNamesArray;
     public dataCollector(String filename) {
         this.filename = filename;
@@ -37,7 +37,7 @@ public class dataCollector {
 				rows++;
 			}
 
-			GraduateGradesArray = new String[rows][columns]; // This is the 2D array that we create, it is an array of doubles because the code given to us mostly uses doubles
+			GraduateGradesArray = new double[rows][columns]; // This is the 2D array that we create, it is an array of doubles because the code given to us mostly uses doubles
 			CourseNamesArray = new String[columns]; // This is the array that stores the course names according to their courseID
             
 			// The following while loop fills the array with the grades for each course for each student
@@ -50,11 +50,11 @@ public class dataCollector {
 				lineScanner.next();
             	while (lineScanner.hasNext()) {
                     if (lineScanner.hasNext("NG")) {
-                        GraduateGradesArray[linesDone-1][j] = "NG";
+                        //GraduateGradesArray[linesDone-1][j] = "NG";
                         lineScanner.next();
                         j++;
                     } else if (lineScanner.hasNextDouble()) {
-						GraduateGradesArray[linesDone-1][j] = lineScanner.next();
+						//GraduateGradesArray[linesDone-1][j] = lineScanner.next();
 						j++;
             		} else {
             			CourseNamesArray[z] = lineScanner.next();
