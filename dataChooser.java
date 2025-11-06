@@ -8,6 +8,8 @@ class dataChooser{
     public int PITChecker = 0;
     public double PITFeature = 0;
 
+    public double grade = 0;
+
     
     //We choose an array made of the grades for the course
     public dataChooser(String[][] data, String[][] StudentInfo, int course) {
