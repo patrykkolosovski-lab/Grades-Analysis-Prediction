@@ -33,15 +33,16 @@ public class dataCollector {
 			columnScanner.close(); // Same here
 
 			// The following is a while loop that counts the number of rows based on just going line by line in the file and counting how many jumps are made
-			while (rowScanner.hasNextLine() && rows < 50) { // Note that it stops after 50, this is because we have thousands of rows and right now we're just writing and testing the code
+			while (rowScanner.hasNextLine()) { // Note that it stops after 50, this is because we have thousands of rows and right now we're just writing and testing the code
 				rows++;
+				rowScanner.nextLine();
 			}
 
 			GraduateGradesArray = new String[rows][columns]; // This is the 2D array that we create, it is an array of doubles because the code given to us mostly uses doubles
 			CourseNamesArray = new String[columns]; // This is the array that stores the course names according to their courseID
             
 			// The following while loop fills the array with the grades for each course for each student
-            while (elementScanner.hasNextLine() && linesDone < 50) {
+            while (elementScanner.hasNextLine()) {
             	line = elementScanner.nextLine();
             	lineScanner = new Scanner(line);
                 lineScanner.useDelimiter(",");

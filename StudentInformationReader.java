@@ -33,15 +33,16 @@ public class StudentInformationReader {
 			columnScanner.close();
 
 			
-			while (rowScanner.hasNextLine() && rows < 50) { 
+			while (rowScanner.hasNextLine()) { 
 				rows++;
+				rowScanner.nextLine();
 			}
 
 			StudentInfoArray = new String[rows][columns]; 
 			
             
 			// The following while loop fills the array with the grades for each course for each student
-            while (elementScanner.hasNextLine() && linesDone < 50) {
+            while (elementScanner.hasNextLine()) {
             	line = elementScanner.nextLine();
             	lineScanner = new Scanner(line);
                 lineScanner.useDelimiter(",");

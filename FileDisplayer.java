@@ -10,7 +10,7 @@ public class FileDisplayer {
         //To run code for GG:java FileDisplayer.java GraduateGrades.csv(write this in terminal)
         //To run code for CG:java FileDIsplayer.java CurrentGrades.csv(write this in terminal)
         //args[0]
-        String fileName = "GraduateGrades.csv"; // The name of the file you want to read
+        String fileName = "CurrentGrades.csv"; // The name of the file you want to read
 
         // Preparing objects for phase1step1+2
         dataCollector datacollector = new dataCollector(fileName);
