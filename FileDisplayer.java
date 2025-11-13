@@ -40,10 +40,11 @@ public class FileDisplayer {
 
         // Phase1Step4 Test
 
-
+        
         // test Filterer
         Filterer filterer = new Filterer("Stable");
-        int[] indexes = filterer.getStudentIndexWithNotFeature("Stable", studentinformationreader.StudentInfoArray);
+        //TODO: NOT WORKING
+        int[] indexes = filterer.getStudentIndexWithFeature(studentinformationreader.StudentInfoArray);
 
         for (int i = 0; i < indexes.length; i++) {
                 System.out.println("Index: " + indexes[i]);

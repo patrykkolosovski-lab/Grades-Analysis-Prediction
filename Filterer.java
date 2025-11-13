@@ -3,19 +3,28 @@ public class Filterer{
     public String feature;
     public int FeatureColumn;
 
+    public double numericFeature;
+    public int courseColumn;
+
+
     public Filterer(String feature) {
         this.feature = feature;
         dataChooser datachooser = new dataChooser(feature);
         this.FeatureColumn = datachooser.getFeatureColumn();
     }
+
+    public Filterer(double numericFeature, int courseColumn) {
+        this.numericFeature = numericFeature;
+        this.courseColumn = courseColumn;
+    }
     
-    public int[] getStudentIndexWithFeature(String ActualFeature, String[][] SI) {
-        dataChooser datachooser = new  dataChooser(ActualFeature);
+    public int[] getStudentIndexWithFeature(String[][] SI) {
+        dataChooser datachooser = new  dataChooser(feature);
         int FeatureColumn = datachooser.getFeatureColumn();
          //Step 1:finding out the length of the array
     int count=0;
     for(int i=0;i<SI.length;i++){
-        if(SI[i][FeatureColumn].equalsIgnoreCase(ActualFeature)){
+        if(SI[i][FeatureColumn].equalsIgnoreCase(feature)){
             count++;
         }
     }
@@ -23,7 +32,7 @@ public class Filterer{
     int index=0;
     int SItemp[]=new int[count];
     for(int i=0;i<SI.length;i++){
-        if(SI[i][FeatureColumn].equalsIgnoreCase(ActualFeature)){
+        if(SI[i][FeatureColumn].equalsIgnoreCase(feature)){
             SItemp[index]=i;
             index++;
         }
@@ -31,14 +40,13 @@ public class Filterer{
     return SItemp;
     }
 
-
-    public int[] getStudentIndexWithNotFeature(String ActualFeature2, String[][] SI){
-        dataChooser dataChooser = new dataChooser(ActualFeature2);
+    public int[] getStudentIndexWithNotFeature(String[][] SI){
+        dataChooser dataChooser = new dataChooser(feature);
         int FeatureColumn2 = dataChooser.getFeatureColumn();
     //Step 1:finding out the length of the array
     int count2=0;
     for(int i=0;i<SI.length;i++){
-        if(!SI[i][FeatureColumn2].equalsIgnoreCase(ActualFeature2)){
+        if(!SI[i][FeatureColumn2].equalsIgnoreCase(feature)){
             count2++;
         }
     }
@@ -46,7 +54,7 @@ public class Filterer{
     int index2=0;
     int SItemp2[]=new int[count2];
     for(int i=0;i<SI.length;i++){
-        if(!SI[i][FeatureColumn2].equalsIgnoreCase(ActualFeature2)){//negation
+        if(!SI[i][FeatureColumn2].equalsIgnoreCase(feature)){//negation
             SItemp2[index2]=i;
             index2++;
         }
@@ -54,14 +62,14 @@ public class Filterer{
     return SItemp2;
     }
 
-    public int[] getNumericFeature(double ActualNumericFeature, String[][] SI, String[][] CG){
-    
+    public int[] getNumericFeature(String[][] CG){
+
         //Step 1:finding out the length of the array
         int count=0;
         for(int i=0;i<CG.length;i++){
-          if(CG[i][FeatureColumn]==null || CG[i][FeatureColumn].equals("NG")){continue;}
-          Double grade=Double.parseDouble(CG[i][FeatureColumn]);
-         if(grade>ActualNumericFeature){
+          if(CG[i][courseColumn]==null || CG[i][courseColumn].equals("NG")){continue;}
+          Double grade=Double.parseDouble(CG[i][courseColumn]);
+         if(grade>numericFeature){
              count++;
          }
      }
@@ -70,9 +78,9 @@ public class Filterer{
         int index=0;
         int SItemp[]=new int[count];
         for(int i=0;i<CG.length;i++){
-            if(CG[i][FeatureColumn]==null || CG[i][FeatureColumn].equalsIgnoreCase("NG")){continue;}
-                Double grade=Double.parseDouble(CG[i][FeatureColumn]);
-            if(grade>ActualNumericFeature){
+            if(CG[i][courseColumn]==null || CG[i][courseColumn].equalsIgnoreCase("NG")){continue;}
+                Double grade=Double.parseDouble(CG[i][courseColumn]);
+            if(grade>numericFeature){
                 SItemp[index]=i;
                 index++;
         }
@@ -80,16 +88,14 @@ public class Filterer{
     return SItemp;
     }
 
-    public int[] getNotNumericFeature(double ActualNumericFeature, String[][] SI, String[][] CG){
-    int FeatureColumn2=FeatureColumn;
-    double ActualNumericFeature2=ActualNumericFeature;
+    public int[] getNotNumericFeature(String[][] CG){
     
     //Step 1:finding out the length of the array
     int count2=0;
     for(int i=0;i<CG.length;i++){
-        if(CG[i][FeatureColumn2]==null || CG[i][FeatureColumn2].equalsIgnoreCase("NG")){continue;}
-        Double grade=Double.parseDouble(CG[i][FeatureColumn2]);
-        if(grade>ActualNumericFeature2){
+        if(CG[i][courseColumn]==null || CG[i][courseColumn].equalsIgnoreCase("NG")){continue;}
+        Double grade=Double.parseDouble(CG[i][courseColumn]);
+        if(grade>numericFeature){
             count2++;
         }
     }
@@ -97,9 +103,9 @@ public class Filterer{
     int index2=0;
     int SItemp2[]=new int[count2];
     for(int i=0;i<CG.length;i++){
-        if(CG[i][FeatureColumn2]==null || CG[i][FeatureColumn2].equalsIgnoreCase("NG")){continue;}
-        Double grade=Double.parseDouble(CG[i][FeatureColumn2]);
-        if(grade<=ActualNumericFeature2){
+        if(CG[i][courseColumn]==null || CG[i][courseColumn].equalsIgnoreCase("NG")){continue;}
+        Double grade=Double.parseDouble(CG[i][courseColumn]);
+        if(grade<=numericFeature){
             SItemp2[index2]=i;
             index2++;
         }

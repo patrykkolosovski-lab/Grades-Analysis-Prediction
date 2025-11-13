@@ -8,7 +8,7 @@ public class step3 {
     String ActualFeature="Stable";
     
     Filterer filterer = new Filterer(ActualFeature);
-    int[] SItemp = filterer.getStudentIndexWithFeature(ActualFeature, SI);
+    int[] SItemp = filterer.getStudentIndexWithFeature(SI);
 
     //Step 3:calculating the average of those that have the feature
     double totalsum=0;
@@ -441,7 +441,7 @@ public void STEP3PART4(int studentID, double[][] results, int best_index, String
     FeatureColumn = 4; // Bio-Luminal Transmission
 }
 
-    if (SI[studentID][FeatureColumn].equals(features[best_index])) {
+    if (SI[studentID][FeatureColumn].equalsIgnoreCase(features[best_index])) {
         hasFeature = true;
     }
 
