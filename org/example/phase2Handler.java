@@ -1,5 +1,4 @@
 package org.example;
-
 public class phase2Handler{
     public String[][] CurrentGrades;
     public String[][] StudentInfo;
@@ -31,17 +30,57 @@ public class phase2Handler{
 
     public int[][] getSplitData(String feature){
         int[][] splitData = new int[2][];
-        Splitter splitter = new Splitter(feature);
-        splitData[0] = splitter.getStudentIndexWithFeature(StudentInfo);
-        splitData[1] = splitter.getStudentIndexWithNotFeature(StudentInfo);
+        Splitter filterer = new Splitter(feature);
+        splitData[0] = filterer.getStudentIndexWithFeature(StudentInfo);
+        splitData[1] = filterer.getStudentIndexWithNotFeature(StudentInfo);
         return splitData;
     }
 
     public int[][] getGradeSplitData(double numericFeature) {
         int[][] splitData = new int[2][];
-        Splitter splitter = new Splitter(numericFeature, courseColumn);
-        splitData[0] = splitter.getNumericFeature(CurrentGrades);
-        splitData[1] = splitter.getNotNumericFeature(CurrentGrades);
+        Splitter filterer = new Splitter(numericFeature, courseColumn);
+        splitData[0] = filterer.getNumericFeature(CurrentGrades);
+        splitData[1] = filterer.getNotNumericFeature(CurrentGrades);
+        return splitData;
+    }
+
+    public int[][] getAverageGradeSplitData(double numericFeature) {
+        int[][] splitData = new int[2][];
+        Splitter filterer = new Splitter(numericFeature, courseColumn);
+        splitData[0] = filterer.getGradesAboveAverage(CurrentGrades, numericFeature);
+        splitData[1] = filterer.getGradesBelowAverage(CurrentGrades, numericFeature);
+        return splitData;
+    }
+
+    public int[][] getVarianceGradeSplitData(double numericFeature) {
+        int[][] splitData = new int[2][];
+        Splitter filterer = new Splitter(numericFeature, courseColumn);
+        splitData[0] = filterer.getGradesAboveVariance(CurrentGrades, numericFeature);
+        splitData[1] = filterer.getGradesBelowVariance(CurrentGrades, numericFeature);
+        return splitData;
+    }
+
+    public int[][] getStandardDeviationGradeSplitData(double numericFeature) {
+        int[][] splitData = new int[2][];
+        Splitter filterer = new Splitter(numericFeature, courseColumn);
+        splitData[0] = filterer.getGradesAboveStandardDeviation(CurrentGrades, numericFeature);
+        splitData[1] = filterer.getGradesBelowStandardDeviation(CurrentGrades, numericFeature);
+        return splitData;
+    }
+
+    public int[][] getRangeGradeSplitData(double numericFeature) {
+        int[][] splitData = new int[2][];
+        Splitter filterer = new Splitter(numericFeature, courseColumn);
+        splitData[0] = filterer.getGradesAboveRange(CurrentGrades, numericFeature);
+        splitData[1] = filterer.getGradesBelowRange(CurrentGrades, numericFeature);
+        return splitData;
+    }
+
+    public int[][] getNGSplitData() {
+        int[][] splitData = new int[2][];
+        Splitter filterer = new Splitter("NG");
+        splitData[0] = filterer.getNgGrades(chosenData);
+        splitData[1] = filterer.getNotNGGrades(chosenData);
         return splitData;
     }
 }

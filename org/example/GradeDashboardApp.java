@@ -301,6 +301,7 @@ public class GradeDashboardApp extends Application {
         deleteButton.setOnAction(e -> {
             VBox parent = (VBox) row.getParent();
             parent.getChildren().remove(row);
+
         });
 
         HBox.setHgrow(valueField, Priority.ALWAYS);
