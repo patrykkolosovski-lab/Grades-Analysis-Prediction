@@ -17,7 +17,7 @@
 
         <!-- Updated to JavaFX 24 to match Java 24 -->
         <javafx.version>24</javafx.version>
-        <mainClass>org.org.example.GradeDashboardApp</mainClass>
+        <mainClass>org.org.example.GUI.GradeDashboardApp</mainClass>
     </properties>
 
     <dependencies>

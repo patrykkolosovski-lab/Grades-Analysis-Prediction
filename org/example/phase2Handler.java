@@ -1,4 +1,8 @@
 package org.example;
+
+import org.example.tools.Splitter;
+import org.example.tools.dataChooser;
+
 public class phase2Handler{
     public String[][] CurrentGrades;
     public String[][] StudentInfo;

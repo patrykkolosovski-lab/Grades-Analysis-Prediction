@@ -14,5 +14,5 @@ Known ways to run the code
 11. A new text bar should appear that says VM options, paste the following line
 --module-path "<PATHTOYOURLIB>" --add-modules javafx.controls,javafx.fxml
 12. replace <PATHTOYOURLIB> with the file path to the JavaFX lib folder
-13. Choose GradeDashboardApp as your Main Class, then click Apply and OK
+13. Choose startClass as your Main Class, then click Apply and OK
 14. Now click on the play button to run the code, you should see the GUI appear shortly
